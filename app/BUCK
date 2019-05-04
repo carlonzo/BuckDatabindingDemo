@@ -64,16 +64,16 @@ okbuck_android_library(
         '//.okbuck/workspace/d8:rt-stub.jar',
     ],
     extra_arguments = [
-        '-Aandroid.databinding.artifactType=',
-        '-Aandroid.databinding.modulePackage=',
-        '-Aandroid.databinding.minApi=',
-        '-Aandroid.databinding.sdkDir=',
-        '-Aandroid.databinding.dependencyArtifactsDir=',
-        '-Aandroid.databinding.layoutInfoDir=',
-        '-Aandroid.databinding.baseFeatureInfoDir=', ?
-        '-Aandroid.databinding.featureInfoDir=', ?
-        '-Aandroid.databinding.aarOutDir=', ?
-        '-Aandroid.databinding.exportClassListOutFile=', ?
+        '-Aandroid.databinding.artifactType=APPLICATION',
+        '-Aandroid.databinding.modulePackage=com.hackathon.buckapp',
+        '-Aandroid.databinding.minApi=14',
+        '-Aandroid.databinding.sdkDir=/not/used',
+        '-Aandroid.databinding.dependencyArtifactsDir=../build-databinding/layoutinfo',
+        '-Aandroid.databinding.layoutInfoDir=../build-databinding/layoutinfo',
+#         '-Aandroid.databinding.baseFeatureInfoDir=', ?
+#         '-Aandroid.databinding.featureInfoDir=', ?
+        '-Aandroid.databinding.aarOutDir=../build-databinding/aarOutDir',
+        '-Aandroid.databinding.exportClassListOutFile=/tmp/exported_classes',
         '-Aandroid.databinding.enableV2=1',
         '-Aandroid.databinding.enableDebugLogs=1'
 ],
