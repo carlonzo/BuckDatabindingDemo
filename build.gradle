@@ -1,0 +1,56 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.gradle_version = '3.3.2'
+
+    repositories {
+        google()
+        jcenter()
+        
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradle_version"
+        classpath "com.uber:okbuck:0.48.0"
+    }
+
+    // configurations.all {
+    //     exclude group:"com.android.tools.build", module: "transform-api"
+    //     resolutionStrategy {
+    //         force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:+"
+    //     }
+    // }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    // configurations.all {
+    //     exclude group:"com.android.tools.build", module: "transform-api"
+    //     resolutionStrategy {
+    //         force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:+"
+    //     }
+    // }
+}
+
+apply plugin: "com.uber.okbuck"
+
+okbuck {
+    lint {
+        disabled = true
+    }
+
+    intellij {
+        sources = true
+    }
+    
+     jetifier {
+         aarOnly = true
+         exclude = [
+             "androidx.*"
+         ]
+//         customConfigFile = "/Users/carlo/Projects/okbuck/tooling/jetifier/custom.config"
+     }
+}
