@@ -68,14 +68,15 @@ okbuck_android_library(
         '-Aandroid.databinding.modulePackage=com.hackathon.buckapp',
         '-Aandroid.databinding.minApi=14',
         '-Aandroid.databinding.sdkDir=/not/used',
-        '-Aandroid.databinding.dependencyArtifactsDir=../build-databinding/layoutinfo',
-        '-Aandroid.databinding.layoutInfoDir=../build-databinding/layoutinfo',
+        '-Aandroid.databinding.dependencyArtifactsDir=/Users/carlo/Projects/BuckApp/build-databinding/class-info-out.zip',
+        '-Aandroid.databinding.layoutInfoDir=/Users/carlo/Projects/BuckApp/build-databinding/layoutinfo/layout-info.zip',
 #         '-Aandroid.databinding.baseFeatureInfoDir=', ?
 #         '-Aandroid.databinding.featureInfoDir=', ?
-        '-Aandroid.databinding.aarOutDir=../build-databinding/aarOutDir',
+        '-Aandroid.databinding.aarOutDir=/Users/carlo/Projects/BuckApp/build-databinding/aarOutDir',
         '-Aandroid.databinding.exportClassListOutFile=/tmp/exported_classes',
         '-Aandroid.databinding.enableV2=1',
-        '-Aandroid.databinding.enableDebugLogs=1'
+        '-Aandroid.databinding.enableDebugLogs=1',
+        '-Aandroid.databinding.printEncodedErrorLogs=1'
 ],
     manifest = ':manifest_lib_devDebug',
     disable_lint = True,

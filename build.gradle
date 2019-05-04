@@ -53,4 +53,8 @@ okbuck {
          ]
 //         customConfigFile = "/Users/carlo/Projects/okbuck/tooling/jetifier/custom.config"
      }
+
+     externalDependencies {
+        downloadInBuck = false
+    }
 }
