@@ -66,6 +66,7 @@ okbuck_android_library(
         '-Aandroid.databinding.minApi=14',
         '-Aandroid.databinding.sdkDir=/not/used',
         '-Aandroid.databinding.dependencyArtifactsDir=/Users/carlo/Projects/BuckApp/app/data-binding-output/classInfo',
+        '-Aandroid.databinding.classLogDir=/Users/carlo/Projects/BuckApp/app/data-binding-output/classInfo',
         '-Aandroid.databinding.layoutInfoDir=/Users/carlo/Projects/BuckApp/app/data-binding-output/layoutInfo',
         '-Aandroid.databinding.aarOutDir=/Users/carlo/Projects/BuckApp/build-databinding/aarOutDir',
         '-Aandroid.databinding.exportClassListOutFile=/tmp/exported_classes',

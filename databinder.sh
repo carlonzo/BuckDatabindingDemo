@@ -1,5 +1,6 @@
 set -x
 
+TRIGGER_FILE="package com.hackathon.buckapp; import androidx.databinding.BindingBuildInfo; @BindingBuildInfo public class DataBindingInfo {}"
 
 BASE='build-databinding'
 
@@ -18,7 +19,6 @@ mkdir $RES_OUTPUT
 mkdir aarOutDir  # used by buck processor
 
 PACKAGE='com.hackathon.buckapp'
-
 
 java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar \
 PROCESS \
@@ -49,3 +49,5 @@ cp -r $RES_OUTPUT $BUILD_OUTPUT
 unzip $SRC_OUTPUT_ZIP -d $BUILD_OUTPUT/srcOutput
 unzip $CLASS_INFO_OUTPUT_ZIP -d $BUILD_OUTPUT/classInfo
 unzip $LAYOUT_INFO_OUTPUT_ZIP -d $BUILD_OUTPUT/layoutInfo
+
+echo $TRIGGER_FILE > $BUILD_OUTPUT/srcOutput/com/hackathon/buckapp/DataBindingInfo.java
