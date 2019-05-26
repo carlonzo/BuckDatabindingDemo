@@ -49,18 +49,7 @@ android {
 
 
 dependencies {
-    // implementation "androidx.appcompat:appcompat:1.0.1"
-    // implementation "androidx.databinding:databinding-runtime:$gradle_version"
-    // implementation "androidx.databinding:databinding-common:$gradle_version"
-    // implementation "androidx.databinding:databinding-adapters:$gradle_version"
-    // annotationProcessor "androidx.databinding:databinding-compiler:$gradle_version"
-    // annotationProcessor "androidx.databinding:databinding-compiler-common:$gradle_version"
-    // implementation fileTree('libs/baseLibrary-3.3.0-dev.jar')
-    // implementation fileTree('libs/databinding-common-3.3.0-dev.jar')
-    // annotationProcessor fileTree('libs/databinding-compiler-3.3.0-dev.jar')
-    // annotationProcessor fileTree('libs/databinding-compiler-common-3.3.0-dev.jar')
-    //    implementation 'com.google.dagger:dagger:2.20'
-    //    annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
+
 }
 
 repositories {
