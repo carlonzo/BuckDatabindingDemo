@@ -132,3 +132,4 @@ fastlane/readme.md
 
 buck-out
 build-databinding
+data-binding-output/artifacts/
