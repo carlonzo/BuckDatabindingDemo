@@ -21,9 +21,9 @@ mkdir aarOutDir  # used by buck processor
 
 PACKAGE='com.hackathon.buckapp'
 
-cp /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar BASE/android-data-binding-fat.jar
+cp /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar $BASE/android-data-binding-fat.jar
 
-java -jar BASE/android-data-binding-fat.jar \
+java -jar $BASE/android-data-binding-fat.jar \
 PROCESS \
 -package $PACKAGE \
 -resInput /Users/carlo/Projects/BuckApp/app/src/main/res \
@@ -33,7 +33,7 @@ PROCESS \
 -useAndroidX true
 
 
-java -jar BASE/android-data-binding-fat.jar \
+java -jar $BASE/android-data-binding-fat.jar \
 GEN_BASE_CLASSES \
 -classInfoOut $CLASS_INFO_OUTPUT_ZIP \
 -layoutInfoFiles $LAYOUT_INFO_OUTPUT_ZIP \
