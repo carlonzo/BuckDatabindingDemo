@@ -3,55 +3,57 @@ set -x
 
 TRIGGER_FILE="package com.hackathon.buckapp; import androidx.databinding.BindingBuildInfo; @BindingBuildInfo public class DataBindingInfo {}"
 
+HOME_PROJECT=$(pwd)
 BASE='build-databinding'
-
 RES_OUTPUT=$BASE/resOutput
 SRC_OUTPUT_ZIP=$BASE/srcOutput.zip
 CLASS_INFO_OUTPUT_ZIP=$BASE/class-info.zip
 LAYOUT_INFO_OUTPUT_ZIP=$BASE/layout-info.zip
 
-rm -rf $BASE
+process_module () {
+    local MODULE_PATH=${HOME_PROJECT}/"$1"
+    local PACKAGE="$2"
+    local PACKAGE_SPLIT="$3"
+    cd $MODULE_PATH
 
-rm -rf aarOutDir
+    rm -rf $BASE
 
-mkdir $BASE
-mkdir $RES_OUTPUT
+    mkdir $BASE
+    mkdir $RES_OUTPUT
+    mkdir $BASE/aarOutDir  # used by buck processor
 
-mkdir aarOutDir  # used by buck processor
-
-PACKAGE='com.hackathon.buckapp'
-
-cp /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar $BASE/android-data-binding-fat.jar
-
-java -jar $BASE/android-data-binding-fat.jar \
-PROCESS \
--package $PACKAGE \
--resInput /Users/carlo/Projects/BuckApp/app/src/main/res \
--resOutput $RES_OUTPUT \
--layoutInfoOutput $BASE \
--zipLayoutInfo true \
--useAndroidX true
+    java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar \
+    PROCESS \
+    -package ${PACKAGE} \
+    -resInput ${MODULE_PATH}/src/main/res \
+    -resOutput ${MODULE_PATH}/${RES_OUTPUT} \
+    -layoutInfoOutput ${MODULE_PATH}/${BASE} \
+    -zipLayoutInfo true \
+    -useAndroidX true
 
 
-java -jar $BASE/android-data-binding-fat.jar \
-GEN_BASE_CLASSES \
--classInfoOut $CLASS_INFO_OUTPUT_ZIP \
--layoutInfoFiles $LAYOUT_INFO_OUTPUT_ZIP \
--package $PACKAGE \
--sourceOut $SRC_OUTPUT_ZIP \
--useAndroidX true \
--zipSourceOutput true
+    java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar \
+    GEN_BASE_CLASSES \
+    -classInfoOut ${MODULE_PATH}/${CLASS_INFO_OUTPUT_ZIP} \
+    -layoutInfoFiles ${MODULE_PATH}/${LAYOUT_INFO_OUTPUT_ZIP} \
+    -package ${PACKAGE} \
+    -sourceOut ${MODULE_PATH}/${SRC_OUTPUT_ZIP} \
+    -useAndroidX true \
+    -zipSourceOutput true
 
-BUILD_OUTPUT='app/data-binding-output'
+    mkdir $BASE/artifacts
 
-rm -rf $BUILD_OUTPUT
+    cp -r $RES_OUTPUT $BASE
+    unzip $SRC_OUTPUT_ZIP -d $BASE/srcOutput
+    unzip $CLASS_INFO_OUTPUT_ZIP -d $BASE/classInfo
+    unzip $LAYOUT_INFO_OUTPUT_ZIP -d $BASE/layoutInfo
 
-mkdir $BUILD_OUTPUT
-mkdir $BUILD_OUTPUT/artifacts
+    echo $TRIGGER_FILE > $BASE/srcOutput/${PACKAGE_SPLIT}/DataBindingInfo.java
 
-cp -r $RES_OUTPUT $BUILD_OUTPUT
-unzip $SRC_OUTPUT_ZIP -d $BUILD_OUTPUT/srcOutput
-unzip $CLASS_INFO_OUTPUT_ZIP -d $BUILD_OUTPUT/classInfo
-unzip $LAYOUT_INFO_OUTPUT_ZIP -d $BUILD_OUTPUT/layoutInfo
+    rm $SRC_OUTPUT_ZIP
+    rm $CLASS_INFO_OUTPUT_ZIP
+    rm $LAYOUT_INFO_OUTPUT_ZIP
+}
 
-echo $TRIGGER_FILE > $BUILD_OUTPUT/srcOutput/com/hackathon/buckapp/DataBindingInfo.java
+process_module "app" "com.hackathon.buckapp" "com/hackathon/buckapp"
+process_module "module-a" "com.hackathon.module_a" "com/hackathon/module_a"
