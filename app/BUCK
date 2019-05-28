@@ -18,9 +18,9 @@ android_resource(
     name = 'res_devDebug',
     package = 'com.hackathon.buckapp',
     res = res_glob([
-        ('data-binding-output/resOutput', '**'),
+        ('build-databinding/resOutput', '**'),
     ]),
-    project_res = 'data-binding-output/resOutput',
+    project_res = 'build-databinding/resOutput',
     deps = [
         '//.okbuck/ext/androidx/databinding:databinding-adapters-3.4.0.aar',
         '//.okbuck/ext/androidx/databinding:databinding-runtime-3.4.0.aar',
@@ -50,7 +50,7 @@ okbuck_android_library(
     name = 'src_devDebug',
     srcs = glob([
         'src/main/java/**/*.java',
-        'data-binding-output/srcOutput/**/*.java'
+        'build-databinding/srcOutput/**/*.java'
     ]),
     source = '8',
     target = '8',
@@ -65,9 +65,9 @@ okbuck_android_library(
         '-Aandroid.databinding.modulePackage=com.hackathon.buckapp',
         '-Aandroid.databinding.minApi=14',
         '-Aandroid.databinding.sdkDir=/not/used',
-        '-Aandroid.databinding.dependencyArtifactsDir=/Users/carlo/Projects/BuckApp/app/data-binding-output/classInfo',
-        '-Aandroid.databinding.classLogDir=/Users/carlo/Projects/BuckApp/app/data-binding-output/classInfo',
-        '-Aandroid.databinding.layoutInfoDir=/Users/carlo/Projects/BuckApp/app/data-binding-output/layoutInfo',
+        '-Aandroid.databinding.dependencyArtifactsDir=/Users/carlo/Projects/BuckApp/app/build-databinding/classInfo',
+        '-Aandroid.databinding.classLogDir=/Users/carlo/Projects/BuckApp/app/build-databinding/classInfo',
+        '-Aandroid.databinding.layoutInfoDir=/Users/carlo/Projects/BuckApp/app/build-databinding/layoutInfo',
         '-Aandroid.databinding.aarOutDir=/Users/carlo/Projects/BuckApp/build-databinding/aarOutDir',
         '-Aandroid.databinding.exportClassListOutFile=/tmp/exported_classes',
         '-Aandroid.databinding.enableV2=1',
