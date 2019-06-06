@@ -22,7 +22,7 @@ process_module () {
     mkdir $RES_OUTPUT
     mkdir $BASE/aarOutDir  # used by buck processor
 
-    java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar \
+    java -jar /Users/carlo/Projects/BuckApp/bins/android-data-binding-exec-3.4.0.jar \
     PROCESS \
     -package ${PACKAGE} \
     -resInput ${MODULE_PATH}/src/main/res \
@@ -32,7 +32,7 @@ process_module () {
     -useAndroidX true
 
 
-    java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar \
+    java -jar /Users/carlo/Projects/BuckApp/bins/android-data-binding-exec-3.4.0.jar \
     GEN_BASE_CLASSES \
     -classInfoOut ${MODULE_PATH}/${CLASS_INFO_OUTPUT_ZIP} \
     -layoutInfoFiles ${MODULE_PATH}/${LAYOUT_INFO_OUTPUT_ZIP} \
