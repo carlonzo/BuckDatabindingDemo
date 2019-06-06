@@ -16,7 +16,7 @@ okbuck_manifest(
 
 genrule(
     name = 'databinding_processRes_devDebug',
-    cmd = 'java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar PROCESS ' +
+    cmd = 'java -jar /Users/carlo/Projects/BuckApp/bins/android-data-binding-exec-3.4.0.jar PROCESS ' +
     '-package com.hackathon.buckapp ' +
     '-resInput /Users/carlo/Projects/BuckApp/app/src/main/res ' +
     '-resOutput $OUT/res ' +
@@ -30,7 +30,7 @@ genrule(
     name = 'databinding_gen_base_classes_devDebug',
     srcs = [':databinding_processRes_devDebug'],
     cmd = 'mkdir $OUT && ' +
-    'java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar GEN_BASE_CLASSES ' +
+    'java -jar /Users/carlo/Projects/BuckApp/bins/android-data-binding-exec-3.4.0.jar GEN_BASE_CLASSES ' +
     '-package com.hackathon.buckapp ' +
     '-classInfoOut $OUT/class-info.zip ' +
     '-layoutInfoFiles $SRCS/layout-info.zip ' +
