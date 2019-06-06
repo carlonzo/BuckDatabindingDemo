@@ -14,21 +14,73 @@ okbuck_manifest(
     debuggable = True,
 )
 
+genrule(
+    name = 'databinding_processRes_devDebug',
+    cmd = 'java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar PROCESS ' +
+    '-package com.hackathon.buckapp ' +
+    '-resInput /Users/carlo/Projects/BuckApp/app/src/main/res ' +
+    '-resOutput $OUT/res ' +
+    '-layoutInfoOutput $OUT ' +
+    '-zipLayoutInfo true ' +
+    '-useAndroidX true',
+    out = 'databinding_build'
+)
+
+genrule(
+    name = 'databinding_gen_base_classes_devDebug',
+    srcs = [':databinding_processRes_devDebug'],
+    cmd = 'mkdir $OUT && ' +
+    'java -jar /Users/carlo/Projects/aosp/tools/data-binding/exec/build/intermediates/fullJar/android-data-binding-fat.jar GEN_BASE_CLASSES ' +
+    '-package com.hackathon.buckapp ' +
+    '-classInfoOut $OUT/class-info.zip ' +
+    '-layoutInfoFiles $SRCS/layout-info.zip ' +
+    '-sourceOut $OUT/src-output.zip ' +
+    '-useAndroidX true ' +
+    '-zipSourceOutput true',
+    out = 'databinding_build'
+)
+
+genrule(
+    name = 'databinding_prepare_deps_devDebug',
+    srcs = [
+        ':databinding_processRes_devDebug',
+        ':databinding_gen_base_classes_devDebug'
+    ],
+    cmd = 'mkdir $OUT && ' +
+    'SRCS=($SRCS) &&' +
+    'mkdir $OUT/src && unzip ${SRCS[1]}/src-output.zip -d $OUT/src && ' +
+    'mkdir $OUT/class-info && unzip ${SRCS[1]}/class-info.zip -d $OUT/class-info && ' +
+    'mkdir $OUT/layout-info && unzip ${SRCS[0]}/layout-info.zip -d $OUT/layout-info && ' +
+    'echo "package com.hackathon.buckapp; import androidx.databinding.BindingBuildInfo; @BindingBuildInfo public class DataBindingInfo {}" > $OUT/src/com/hackathon/buckapp/DataBindingInfo.java',
+    out = 'databinding_build'
+)
+
+genrule(
+    name = 'databinding_provide_res',
+    srcs = [':databinding_processRes_devDebug'],
+    cmd = 'cp -r $SRCS/res $OUT && ' +
+    'find $OUT -name ".DS_Store" -exec rm -f {} \;',
+    out = 'res'
+)
+
+zip_file(
+    name = 'zip_databinding_src',
+    srcs = [':databinding_provide_src'],
+    out = 'databinding_src.src.zip'
+)
+
 android_resource(
     name = 'res_devDebug',
     package = 'com.hackathon.buckapp',
-    res = res_glob([
-        ('build-databinding/resOutput', '**'),
-    ]),
-    project_res = 'build-databinding/resOutput',
+    res = ':databinding_provide_res',
     deps = [
         '//.okbuck/ext/androidx/databinding:databinding-adapters-3.4.0.aar',
         '//.okbuck/ext/androidx/databinding:databinding-runtime-3.4.0.aar',
-        '//.okbuck/ext/androidx/lifecycle:lifecycle-runtime-2.0.0.aar',
+        '//.okbuck/ext/androidx/lifecycle:lifecycle-runtime-2.0.0.aar'
     ],
     visibility = [
         'PUBLIC',
-    ],
+    ]
 )
 
 android_build_config(
@@ -48,10 +100,10 @@ android_build_config(
 
 okbuck_android_library(
     name = 'src_devDebug',
-    srcs = glob([
-        'src/main/java/**/*.java',
-        'build-databinding/srcOutput/**/*.java'
-    ]),
+    srcs =
+    glob([
+        'src/main/java/**/*.java'
+    ]) + [':zip_databinding_src'],
     source = '8',
     target = '8',
     plugins = [
@@ -65,9 +117,9 @@ okbuck_android_library(
         '-Aandroid.databinding.modulePackage=com.hackathon.buckapp',
         '-Aandroid.databinding.minApi=14',
         '-Aandroid.databinding.sdkDir=/not/used',
-        '-Aandroid.databinding.dependencyArtifactsDir=/Users/carlo/Projects/BuckApp/app/build-databinding/classInfo',
-        '-Aandroid.databinding.classLogDir=/Users/carlo/Projects/BuckApp/app/build-databinding/classInfo',
-        '-Aandroid.databinding.layoutInfoDir=/Users/carlo/Projects/BuckApp/app/build-databinding/layoutInfo',
+        '-Aandroid.databinding.dependencyArtifactsDir=/Users/carlo/Projects/BuckApp/buck-out/gen/app/databinding_prepare_deps_devDebug/databinding_build/class-info',
+        '-Aandroid.databinding.classLogDir=/Users/carlo/Projects/BuckApp/buck-out/gen/app/databinding_prepare_deps_devDebug/databinding_build/class-info',
+        '-Aandroid.databinding.layoutInfoDir=/Users/carlo/Projects/BuckApp/buck-out/gen/app/databinding_prepare_deps_devDebug/databinding_build/layout-info',
         '-Aandroid.databinding.aarOutDir=/Users/carlo/Projects/BuckApp/build-databinding/aarOutDir',
         '-Aandroid.databinding.exportClassListOutFile=/tmp/exported_classes',
         '-Aandroid.databinding.enableV2=1',
@@ -88,7 +140,7 @@ okbuck_android_library(
         '//.okbuck/ext/androidx/lifecycle:lifecycle-runtime-2.0.0.aar',
         ':build_config_devDebug',
         ':manifest_lib_devDebug',
-        ':res_devDebug',
+        ':res_devDebug'
     ],
     visibility = [
         'PUBLIC',
